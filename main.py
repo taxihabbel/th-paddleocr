@@ -25,8 +25,10 @@ def ocr_image():
     img_array = np.array(img)
     result = ocr.ocr(img_array)  # <-- OHNE cls=True
 
-    texts = [line[1][0] for line in result[0]]
-    return jsonify({"text": " ".join(texts)})
+    if result[0] is not None:
+        texts = [line[1][0] for line in result[0]]
+        return jsonify({"text": " ".join(texts)})
+    return jsonify({"text": ""})
 
 
 if __name__ == "__main__":
