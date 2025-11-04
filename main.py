@@ -1,11 +1,11 @@
 from paddleocr import PaddleOCR
 from flask import Flask, request, jsonify
-from flask_cors import CORS  # <-- DIESE ZEILE FEHLT
+from flask_cors import CORS
 from PIL import Image
 import io
 
 app = Flask(__name__)
-CORS(app)  # <-- DIESE ZEILE FEHLT
+CORS(app)
 ocr = PaddleOCR(use_angle_cls=True, lang='de')
 
 @app.route('/')
@@ -19,7 +19,7 @@ def ocr_image():
     
     file = request.files['image']
     img = Image.open(io.BytesIO(file.read()))
-    result = ocr.ocr(img, cls=True)
+    result = ocr.ocr(img)  # <-- OHNE cls=True
     
     texts = [line[1][0] for line in result[0]]
     return jsonify({'text': ' '.join(texts)})
