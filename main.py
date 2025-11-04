@@ -1,9 +1,11 @@
 from paddleocr import PaddleOCR
 from flask import Flask, request, jsonify
+from flask_cors import CORS  # <-- DIESE ZEILE FEHLT
 from PIL import Image
 import io
 
 app = Flask(__name__)
+CORS(app)  # <-- DIESE ZEILE FEHLT
 ocr = PaddleOCR(use_angle_cls=True, lang='de')
 
 @app.route('/')
