@@ -1,0 +1,26 @@
+from paddleocr import PaddleOCR
+from flask import Flask, request, jsonify
+from PIL import Image
+import io
+
+app = Flask(__name__)
+ocr = PaddleOCR(use_angle_cls=True, lang='de')
+
+@app.route('/')
+def health():
+    return "OK"
+
+@app.route('/ocr', methods=['POST'])
+def ocr_image():
+    if 'image' not in request.files:
+        return jsonify({'error': 'No image'}), 400
+    
+    file = request.files['image']
+    img = Image.open(io.BytesIO(file.read()))
+    result = ocr.ocr(img, cls=True)
+    
+    texts = [line[1][0] for line in result[0]]
+    return jsonify({'text': ' '.join(texts)})
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=8080)
