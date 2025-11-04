@@ -12,6 +12,8 @@ Pillow
 pyyaml
 requests
 albumentations
-# to be compatible with albumentations
 albucore
 packaging
+paddlepaddle==2.5.1
+paddleocr==2.7.0
+flask==3.0.0
